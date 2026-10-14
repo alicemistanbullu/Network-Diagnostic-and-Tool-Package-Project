@@ -4,20 +4,15 @@ import argparse
 host = 'localhost'
 def echo_client(port):
     """ A simple echo client """
-    # Create a TCP/IP socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    # Connect the socket to the server
     server_address = (host, port)
     print("Connecting to %s port %s" % server_address)
     sock.connect(server_address)
 
-    # Send data
     try:
-        # Send data
         message = "Test message. This will be echoed"
         print("Sending %s" % message)
         sock.sendall(message.encode('utf-8'))
-        # Look for the response
         amount_received = 0
         amount_expected = len(message)
         received_data = b""
@@ -45,5 +40,3 @@ if __name__ == '__main__':
     port = given_args.port
     echo_client(port)
 
-
-# python 13-client-tcp.py --port=9900
