@@ -2,6 +2,8 @@
 from modules.machine_info import print_machine_info
 from modules.sntp_time import sntp_client
 from modules.ntp_time import print_time
+from modules.chat_server import chat_server
+from modules.chat_client import chat_client
 
 def sntp_menu():
     while True:
@@ -29,12 +31,37 @@ def sntp_menu():
         else:
             print("Invalid choice. Please try again.")
 
+def chat_menu():
+    while True:
+        print("\n=== Simple Chat ===")
+        print("1. Start Chat Server")
+        print("2. Start Chat Client")
+        print("0. Back to Main Menu")
+
+        choice = input("Select an option: ")
+
+        if choice == "1":
+            port = int(input("Enter port number (e.g. 9901): "))
+            chat_server(port)
+
+        elif choice == "2":
+            port = int(input("Enter port number (e.g. 9901): "))
+            chat_client(port)
+
+        elif choice == "0":
+            break
+
+        else:
+            print("Invalid choice. Please try again.")
+
+
 def main():
     while True:
         print("\n=== Network Diagnostic and Tool Package ===")
         print("1. Machine Information")
         print("2. TCP Echo Test")
         print("3. SNTP Time Check")
+        print("4. Simple Chat")
         print("0. Exit\n")
 
         choice = input("Select an option: ")
@@ -51,6 +78,9 @@ def main():
 
         elif choice == "3":
             sntp_menu()
+
+        elif choice == "4":
+            chat_menu()
 
         elif choice == "0":
             print("Exiting program...")
