@@ -4,6 +4,7 @@ from modules.sntp_time import sntp_client
 from modules.ntp_time import print_time
 from modules.chat_server import chat_server
 from modules.chat_client import chat_client
+from modules.error_management import (show_socket_settings, test_error_management)
 
 def sntp_menu():
     while True:
@@ -75,6 +76,27 @@ def view_chat_logs():
     except FileNotFoundError:
         print("No chat file found yet.")
 
+def error_management_menu():
+    while True:
+        print("\n===Socket Settings and Error Management===")
+        print("1. Socket Settings")
+        print("2. Test Connection Error Handling")
+        print("0. Exit\n")
+
+        choice = input("Select an option: ")
+
+        if choice == "1":
+            show_socket_settings()
+
+        elif choice == "2":
+            test_error_management()
+
+        elif choice == "0":
+            break
+
+        else:
+            print("Invalid choice, please try again.")
+
 def main():
     while True:
         print("\n=== Network Diagnostic and Tool Package ===")
@@ -82,6 +104,7 @@ def main():
         print("2. TCP Echo Test")
         print("3. SNTP Time Check")
         print("4. Simple Chat")
+        print("5. Socket Settings and Error Management")
         print("0. Exit\n")
 
         choice = input("Select an option: ")
@@ -101,6 +124,9 @@ def main():
 
         elif choice == "4":
             chat_menu()
+
+        elif choice == "5":
+            error_management_menu()
 
         elif choice == "0":
             print("Exiting program...")
