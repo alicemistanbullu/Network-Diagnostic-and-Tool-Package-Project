@@ -36,7 +36,8 @@ def chat_menu():
         print("\n=== Simple Chat ===")
         print("1. Start Chat Server")
         print("2. Start Chat Client")
-        print("0. Back to Main Menu")
+        print("3. View Chat Logs")
+        print("0. Back to Main Menu\n")
 
         choice = input("Select an option: ")
 
@@ -48,12 +49,31 @@ def chat_menu():
             port = int(input("Enter port number (e.g. 9901): "))
             chat_client(port)
 
+        elif choice == "3":
+            view_chat_logs()
+
         elif choice == "0":
             break
 
         else:
             print("Invalid choice. Please try again.")
 
+def view_chat_logs():
+    log_file = "logs/chat_log.txt"
+
+    try:
+        with open(log_file, "r", encoding="utf-8") as file:
+            logs = file.read()
+
+        if logs:
+            print("\n===Chat Logs===")
+            print(logs)
+
+        else:
+            print("Chat log file is empty.")
+
+    except FileNotFoundError:
+        print("No chat file found yet.")
 
 def main():
     while True:
