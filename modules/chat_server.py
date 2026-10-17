@@ -1,6 +1,6 @@
-
 import socket
 import argparse
+from datetime import datetime
 
 host = "localhost"
 data_payload = 2048
@@ -8,7 +8,6 @@ backlog = 5
 
 
 def chat_server(port):
-    """A simple TCP chat server."""
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -36,18 +35,13 @@ def chat_server(port):
 
                 message = data.decode("utf-8")
                 print("Client: %s" % message)
-
-                with open("logs/chat_log.txt", "a", encoding="utf-8") as log_file:
-                    log_file.write("Client: " + message + "\n")
+                log_message("Client", message)
 
                 if message.lower() == "exit":
                     break
 
                 reply = input("You: ")
-
-                with open("logs/chat_log.txt", "a", encoding="utf-8") as log_file:
-                    log_file.write("Server: " + reply + "\n")
-
+                log_message("Server", reply)
                 client.sendall(reply.encode("utf-8"))
 
                 if reply.lower() == "exit":
@@ -60,6 +54,11 @@ def chat_server(port):
         sock.close()
         print("Chat server closed.")
 
+def log_message(sender, message):
+    timestamp = datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S")
+
+    with open("logs/chat_log.txt", "a", encoding="utf-8") as log_file:
+        log_file.write(f"[{timestamp}] {sender}: {message}\n")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="TCP Chat Server")

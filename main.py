@@ -5,6 +5,7 @@ from modules.ntp_time import print_time
 from modules.chat_server import chat_server
 from modules.chat_client import chat_client
 from modules.error_management import (show_socket_settings, test_error_management)
+from modules.echo_runner import run_echo_test
 
 def sntp_menu():
     while True:
@@ -113,11 +114,7 @@ def main():
             print_machine_info()
 
         elif choice == "2":
-            print("TCP Echo Test")
-            print("Start the server in one terminal:")
-            print("python modules/echo_test.py --port=9900")
-            print("Then start the client in another terminal:")
-            print("python modules/echo_client.py --port=9900")
+            run_echo_test()
 
         elif choice == "3":
             sntp_menu()
