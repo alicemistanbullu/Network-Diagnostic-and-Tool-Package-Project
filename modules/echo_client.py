@@ -1,59 +1,80 @@
+
 import socket
-import sys
+import time
 import argparse
 
-host = 'localhost'
+host = "localhost"
+
 
 def echo_client(port):
+    """Send a test message and verify the echo response."""
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_address = (host, port)
-    print("Connecting to %s port %s" % server_address)
-    sock.connect(server_address)
+
+    message = "Test message. This will be echoed"
+    start_time = time.time()
 
     try:
+        sock.settimeout(3.0)
 
-        message = "Test message. This will be echoed"
-        print("Sending %s" % message)
-        sock.sendall(message.encode('utf-8'))
-        amount_received = 0
-        amount_expected = len(message)
+        print("Connecting to %s port %s" % server_address)
+        sock.connect(server_address)
+
+        print("Sending:", message)
+        sock.sendall(message.encode("utf-8"))
+
         received_data = b""
 
-        while amount_received < amount_expected:
+        while len(received_data) < len(message.encode("utf-8")):
+            data = sock.recv(2048)
 
-            data = sock.recv(16)
-            amount_received += len(data)
+            if not data:
+                break
+
             received_data += data
-            print("Received: %s" % data)
 
-        if received_data == message.encode('utf-8'):
+        received_message = received_data.decode("utf-8", errors="replace")
+        duration = time.time() - start_time
 
-            print("Connection successful, data matches")
+        success = received_data == message.encode("utf-8")
 
+        print("Received:", received_message)
+        print("Duration: %.4f seconds" % duration)
+
+        if success:
+            print("Echo test PASSED: data matches.")
         else:
+            print("Echo test FAILED: data does not match.")
 
-            print("Connection failed, data doesn't match")
+        return {
+            "success": success,
+            "sent_message": message,
+            "received_message": received_message,
+            "duration": duration,
+            "error": None
+        }
 
-    except socket.error as e:
+    except (socket.timeout, OSError) as error:
+        duration = time.time() - start_time
+        print("Echo test FAILED:", error)
 
-        print("Socket error: %s" %str(e))
-
-    except Exception as e:
-
-        print("Other exception: %s" %str(e))
+        return {
+            "success": False,
+            "sent_message": message,
+            "received_message": "",
+            "duration": duration,
+            "error": str(error)
+        }
 
     finally:
+        sock.close()
+        print("Connection closed.")
 
-        print("Closing connection to the server")
 
-    sock.close()
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="TCP Echo Client")
+    parser.add_argument("--port", type=int, required=True)
+    args = parser.parse_args()
 
-if __name__ == '__main__':
-
-    parser = argparse.ArgumentParser(description='Socket Server Example')
-    parser.add_argument('--port', action="store", dest="port", type=int, required=True)
-    given_args = parser.parse_args()
-    port = given_args.port
-    echo_client(port)
-
+    echo_client(args.port)
