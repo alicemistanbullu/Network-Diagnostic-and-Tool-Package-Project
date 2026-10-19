@@ -2,7 +2,7 @@
 import socket
 import time
 import threading
-from modules.echo_client1 import echo_client
+from modules.echo_client import echo_client
 from modules.echo_test_logger import save_echo_result
 
 def run_echo_test():
