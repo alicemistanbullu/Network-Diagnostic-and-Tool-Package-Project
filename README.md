@@ -1,5 +1,5 @@
 
-**Course:** CEN322 – Network Programming
+**Course:** CEN437 – Network Programming
 **Project:** Network Diagnostic and Tool Package
 
 ## Overview
