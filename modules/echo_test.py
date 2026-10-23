@@ -1,5 +1,4 @@
 import socket
-import sys
 import argparse
 host = 'localhost'
 data_payload = 2048
@@ -34,5 +33,3 @@ if __name__ == '__main__':
     port = given_args.port
     echo_server(port)
 
-
-# python 13-server-tcp.py --port=9900

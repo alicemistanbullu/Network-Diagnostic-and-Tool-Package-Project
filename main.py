@@ -1,4 +1,3 @@
-
 from modules.machine_info import print_machine_info
 from modules.sntp_time import sntp_client
 from modules.ntp_time import print_time
